@@ -1,6 +1,6 @@
 # Laravel Nova Searchable Select Field
 
-A Searchable Select Field for Laravel Nova. This field joins the functionalities of the `BelongsTo`field 
+A Searchable Select Field for Laravel Nova. This field joins the functionalities of the `BelongsTo`field
 and `Select` field.
 
 Basically a regular Select field where you specify the resource you want to search for and no "relationships"
@@ -8,7 +8,7 @@ are needed. This means, you can use it also in additional JSON fields in your da
 
 ## Installation
 
-*Composer*
+_Composer_
 
 ```
 composer require sloveniangooner/nova-searchable-select
@@ -24,6 +24,8 @@ use Sloveniangooner\SearchableSelect\SearchableSelect;
 ...
 
 SearchableSelect::make('Content', 'content_id')->resource("contents")
+... or
+SearchableSelect::make("Content", "content_id")->resource(\App\Nova\Content::class)
 ```
 
 ![](usage.gif)
@@ -39,13 +41,10 @@ SearchableSelect::make('Content', 'content_id')
 ```
 
 But also two additional options:
+
 ```php
 SearchableSelect::make('Content', 'content_id')
     ->resource("contents")
     ->label("custom_label_field") // Defaults to 'title'
     ->value("custom_value_field") // Defaults to 'id'
 ```
-
-On the quick to-do list:
-- add the possibility to specify the resource as a string like now or as a resource class like `App\Nova\Content`.
-

@@ -25,6 +25,11 @@ class SearchableSelect extends Select
 
     public function resource($name)
     {
+        // Find searchable resource based on name if it's a class
+        if (class_exists($name)) {
+            $name = $name::uriKey();
+        }
+        
         return $this->withMeta([
             "searchableResource" => $name
         ]);
