@@ -26,6 +26,8 @@ use Sloveniangooner\SearchableSelect\SearchableSelect;
 SearchableSelect::make('Content', 'content_id')->resource("contents")
 ```
 
+![](usage.gif)
+
 You can pass all the regular options like:
 
 ```php
