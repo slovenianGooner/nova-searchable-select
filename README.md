@@ -11,7 +11,7 @@ are needed. This means, you can use it also in additional JSON fields in your da
 _Composer_
 
 ```
-composer require sloveniangooner/nova-searchable-select
+composer require sloveniangooner/searchable-select
 ```
 
 ## Usage
