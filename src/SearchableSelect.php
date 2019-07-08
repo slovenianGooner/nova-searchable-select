@@ -19,7 +19,15 @@ class SearchableSelect extends Select
         parent::__construct($name, $attribute, $resolveCallback);
         $this->withMeta([
             "label" => "title",
-            "valueField" => "id"
+            "valueField" => "id",
+            "isMultiple" => false
+        ]);
+    }
+
+    public function multiple()
+    {
+        return $this->withMeta([
+            "isMultiple" => true
         ]);
     }
 

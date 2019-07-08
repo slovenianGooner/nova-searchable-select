@@ -9,10 +9,17 @@ class SearchableSelectController extends Controller
 {
     public function index(ResourceIndexRequest $request)
     {
-        $items = $request->toQuery()->get([$request->get("label"), $request->get("value")])->each(function ($item) use ($request) {
+        $items = $request->toQuery();
+        if ($request->has("resource_ids")) {
+            $ids = json_decode($request->get("resource_ids"));
+            $items = $items->whereIn($request->get("value"), $ids);
+        }
+
+        $items = $items->get([$request->get("label"), $request->get("value")])->each(function ($item) use ($request) {
             $item->display = $item->{$request->get("label")};
             $item->value = $item->{$request->get("value")};
         });
+
         $resource = $request->resource();
 
         return response()->json([
