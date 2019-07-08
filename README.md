@@ -48,3 +48,15 @@ SearchableSelect::make('Content', 'content_id')
     ->label("custom_label_field") // Defaults to 'title'
     ->value("custom_value_field") // Defaults to 'id'
 ```
+
+You can now also choose the multiple option. Needs a `text` or `json` field in the database.
+
+```php
+SearchableSelect::make('Content', 'content_id')
+    ->resource("contents")
+    ->multiple()
+    ->displayUsingLabels()
+    ->nullable()
+```
+
+![](multiple.gif)
