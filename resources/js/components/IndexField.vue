@@ -1,6 +1,9 @@
 <template>
 	<span>
-		<span v-if="field.isMultiple">{{resourceLabels.join(', ')}}</span>
+		<span v-if="field.isMultiple">
+			<span v-if="resourceLabels.length > 0 ">{{resourceLabels.join(', ')}}</span>
+			<span v-else>&mdash;</span>
+		</span>
 		<span v-else>{{ field.value }}</span>
 	</span>
 </template>
@@ -34,6 +37,7 @@ export default {
 						params: {
 							label: this.field.label,
 							value: this.field.valueField,
+							use_resource_ids: this.field.isMultiple,
 							resource_ids: this.field.value
 						}
 					}

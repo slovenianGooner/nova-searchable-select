@@ -53,6 +53,7 @@ export default {
 						params: {
 							label: this.field.label,
 							value: this.field.valueField,
+							use_resource_ids: this.field.isMultiple,
 							resource_ids: this.field.value
 						}
 					}

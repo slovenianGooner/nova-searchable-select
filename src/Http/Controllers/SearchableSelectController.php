@@ -10,8 +10,8 @@ class SearchableSelectController extends Controller
     public function index(ResourceIndexRequest $request)
     {
         $items = $request->toQuery();
-        if ($request->has("resource_ids")) {
-            $ids = json_decode($request->get("resource_ids"));
+        if ($request->has("use_resource_ids")) {
+            $ids = $request->has("resource_ids") ? json_decode($request->get("resource_ids")) : [];
             $items = $items->whereIn($request->get("value"), $ids);
         }
 
