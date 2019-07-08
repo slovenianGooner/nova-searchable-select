@@ -60,3 +60,11 @@ SearchableSelect::make('Content', 'content_id')
 ```
 
 ![](multiple.gif)
+
+Another option is to define the maximum number of items shown in the search. (Default: 20)
+
+```php
+SearchableSelect::make("Content", "content_id")
+                ->resource("contents")
+                ->max(10)
+```

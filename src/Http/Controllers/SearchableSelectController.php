@@ -15,6 +15,16 @@ class SearchableSelectController extends Controller
             $items = $items->whereIn($request->get("value"), $ids);
         }
 
+        if ($request->has("ignore_resource_ids")) {
+            $ids = $request->has("resource_ids") ? json_decode($request->get("resource_ids")) : [];
+            $items = $items->whereNotIn($request->get("value"), $ids);
+        }
+
+
+        if ($request->has("max")) {
+            $items = $items->take($request->get("max"));
+        }
+
         $items = $items->get([$request->get("label"), $request->get("value")])->each(function ($item) use ($request) {
             $item->display = $item->{$request->get("label")};
             $item->value = $item->{$request->get("value")};
