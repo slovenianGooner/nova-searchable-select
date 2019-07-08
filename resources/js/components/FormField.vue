@@ -1,7 +1,7 @@
 <template>
 	<default-field :field="field" :errors="errors">
 		<template slot="field">
-			<div v-if="field.isMultiple" class="mb-3 searchable-select__selected-resources">
+			<div v-if="selectedResources.length" class="mb-3 searchable-select__selected-resources">
 				<div
 					class="shadow-md mr-3 inline-block rounded-lg bg-gray-400 mb-3"
 					v-for="resource, index in selectedResources"
@@ -34,6 +34,14 @@
 				searchBy="display"
 				class="mb-3"
 			>
+				<!-- Loader -->
+				<div
+					v-if="searching"
+					class="bg-none py-3 overflow-hidden absolute rounded-lg shadow-lg w-full mt-0 max-h-search overflow-y-auto"
+					style="left: 0"
+				>
+					<loader class="text-60" width="40" />
+				</div>
 				<div slot="default" v-if="selectedResource" class="flex items-center">
 					<div v-if="selectedResource.avatar" class="mr-3">
 						<img :src="selectedResource.avatar" class="w-8 h-8 rounded-full block" />
@@ -87,7 +95,8 @@ export default {
 		selectedResources: [],
 		selectedResource: null,
 		selectedResourceId: null,
-		search: ''
+		search: '',
+		searching: false
 	}),
 
 	/**
@@ -120,6 +129,7 @@ export default {
 				}
 				this.selectedResource = null
 				this.selectedResourceId = null
+				this.search = ''
 			} else {
 				this.selectedResource = value
 				this.selectedResourceId = value[this.field.valueField]
@@ -172,15 +182,24 @@ export default {
 		 * Get the resources that may be related to this resource.
 		 */
 		getAvailableResources() {
+			this.searching = true
+
+			let params = this.queryParams
+			params.params.max = this.field.max
+			params.params.resource_ids = JSON.stringify(
+				this.selectedResourcesIds
+			)
+			params.params.ignore_resource_ids = true
 			return Nova.request()
 				.get(
 					`/nova-vendor/searchable-select/${this.field.searchableResource}`,
-					this.queryParams
+					params
 				)
 				.then(response => {
 					// Turn off initializing the existing resource after the first time
 					this.initializingWithExistingResource = false
 					this.availableResources = response.data.resources
+					this.searching = false
 				})
 		},
 
@@ -222,6 +241,14 @@ export default {
 	},
 
 	computed: {
+		selectedResourcesIds() {
+			let ids = []
+			this.selectedResources.forEach(r => {
+				ids.push(r[this.field.valueField])
+			})
+
+			return ids
+		},
 		/**
 		 * Determine if we are editing and existing resource
 		 */

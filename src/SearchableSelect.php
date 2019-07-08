@@ -20,7 +20,15 @@ class SearchableSelect extends Select
         $this->withMeta([
             "label" => "title",
             "valueField" => "id",
-            "isMultiple" => false
+            "isMultiple" => false,
+            "max" => 20
+        ]);
+    }
+
+    public function max($max)
+    {
+        return $this->withMeta([
+            "max" => $max
         ]);
     }
 
