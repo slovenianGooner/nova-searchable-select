@@ -21,7 +21,8 @@
 					</div>
 				</div>
 			</div>
-			<search-input
+
+			<input-searchable-select
 				v-if="!isLocked && !isReadonly"
 				@input="performSearch"
 				@clear="clearSelection"
@@ -34,14 +35,10 @@
 				searchBy="display"
 				class="mb-3"
 			>
-				<!-- Loader -->
-				<div
-					v-if="searching"
-					class="bg-none py-3 overflow-hidden absolute rounded-lg shadow-lg w-full mt-0 max-h-search overflow-y-auto"
-					style="left: 0"
-				>
+				<div slot="loading" class="bg-none py-3 overflow-hidden w-full" v-if="searching">
 					<loader class="text-60" width="40" />
 				</div>
+
 				<div slot="default" v-if="selectedResource" class="flex items-center">
 					<div v-if="selectedResource.avatar" class="mr-3">
 						<img :src="selectedResource.avatar" class="w-8 h-8 rounded-full block" />
@@ -55,7 +52,7 @@
 					</div>
 					{{ option.display }}
 				</div>
-			</search-input>
+			</input-searchable-select>
 
 			<select-control
 				v-if="isLocked || isReadonly"
@@ -143,7 +140,7 @@ export default {
 			}
 
 			if (this.shouldSelectInitialResource) {
-				this.getAvailableResources().then(() =>
+				this.getAvailableResources('', true, null).then(() =>
 					this.selectInitialResource()
 				)
 			}
@@ -164,12 +161,10 @@ export default {
 		 */
 		fill(formData) {
 			if (this.field.isMultiple) {
-				let ids = []
-				this.selectedResources.forEach(r => {
-					ids.push(r[this.field.valueField])
-				})
-
-				formData.append(this.field.attribute, JSON.stringify(ids))
+				formData.append(
+					this.field.attribute,
+					JSON.stringify(this.selectedResourcesIds)
+				)
 			} else {
 				formData.append(
 					this.field.attribute,
@@ -181,15 +176,25 @@ export default {
 		/**
 		 * Get the resources that may be related to this resource.
 		 */
-		getAvailableResources() {
+		getAvailableResources(query, use_resource_ids, max) {
+			console.log(use_resource_ids)
 			this.searching = true
+			this.availableResources = []
 
 			let params = this.queryParams
-			params.params.max = this.field.max
+			if (max !== null) {
+				params.params.max = this.field.max
+			}
 			params.params.resource_ids = JSON.stringify(
-				this.selectedResourcesIds
+				this.selectedResourcesIds.length
+					? this.selectedResourcesIds
+					: JSON.parse(this.selectedResourceId)
 			)
-			params.params.ignore_resource_ids = true
+			if (use_resource_ids !== undefined) {
+				params.params.use_resource_ids = true
+			} else {
+				params.params.ignore_resource_ids = true
+			}
 			return Nova.request()
 				.get(
 					`/nova-vendor/searchable-select/${this.field.searchableResource}`,

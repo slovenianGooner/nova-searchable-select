@@ -15,6 +15,8 @@
     "laravel-nova": "^1.0"
   },
   "dependencies": {
-    "vue": "^2.5.0"
+    "popper.js": "^1.15.0",
+    "vue": "^2.5.0",
+    "vue-clickaway": "^2.2.2"
   }
 }
