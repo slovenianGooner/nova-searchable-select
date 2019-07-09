@@ -177,7 +177,6 @@ export default {
 		 * Get the resources that may be related to this resource.
 		 */
 		getAvailableResources(query, use_resource_ids, max) {
-			console.log(use_resource_ids)
 			this.searching = true
 			this.availableResources = []
 
@@ -185,15 +184,30 @@ export default {
 			if (max !== null) {
 				params.params.max = this.field.max
 			}
-			params.params.resource_ids = JSON.stringify(
-				this.selectedResourcesIds.length
-					? this.selectedResourcesIds
-					: JSON.parse(this.selectedResourceId)
-			)
-			if (use_resource_ids !== undefined) {
-				params.params.use_resource_ids = true
+
+			if (this.field.isMultiple) {
+				let resourceIds = []
+				if (this.selectedResourcesIds.length > 0) {
+					resourceIds = this.selectedResourcesIds
+				} else if (this.selectedResourceId !== null) {
+					resourceIds = JSON.parse(this.selectedResourceId)
+				}
+
+				params.params.resource_ids = JSON.stringify(resourceIds)
+				if (use_resource_ids !== undefined) {
+					params.params.use_resource_ids = true
+				} else {
+					params.params.ignore_resource_ids = true
+				}
 			} else {
-				params.params.ignore_resource_ids = true
+				if (this.selectedResourceId !== null) {
+					params.params.resource_ids = JSON.stringify([
+						this.selectedResourceId
+					])
+					if (use_resource_ids) {
+						params.params.use_resource_ids = true
+					}
+				}
 			}
 			return Nova.request()
 				.get(

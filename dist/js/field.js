@@ -33629,7 +33629,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		getAvailableResources: function getAvailableResources(query, use_resource_ids, max) {
 			var _this3 = this;
 
-			console.log(use_resource_ids);
 			this.searching = true;
 			this.availableResources = [];
 
@@ -33637,11 +33636,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			if (max !== null) {
 				params.params.max = this.field.max;
 			}
-			params.params.resource_ids = JSON.stringify(this.selectedResourcesIds.length ? this.selectedResourcesIds : JSON.parse(this.selectedResourceId));
-			if (use_resource_ids !== undefined) {
-				params.params.use_resource_ids = true;
+
+			if (this.field.isMultiple) {
+				var resourceIds = [];
+				if (this.selectedResourcesIds.length > 0) {
+					resourceIds = this.selectedResourcesIds;
+				} else if (this.selectedResourceId !== null) {
+					resourceIds = JSON.parse(this.selectedResourceId);
+				}
+
+				params.params.resource_ids = JSON.stringify(resourceIds);
+				if (use_resource_ids !== undefined) {
+					params.params.use_resource_ids = true;
+				} else {
+					params.params.ignore_resource_ids = true;
+				}
 			} else {
-				params.params.ignore_resource_ids = true;
+				if (this.selectedResourceId !== null) {
+					params.params.resource_ids = JSON.stringify([this.selectedResourceId]);
+					if (use_resource_ids) {
+						params.params.use_resource_ids = true;
+					}
+				}
 			}
 			return Nova.request().get('/nova-vendor/searchable-select/' + this.field.searchableResource, params).then(function (response) {
 				// Turn off initializing the existing resource after the first time
