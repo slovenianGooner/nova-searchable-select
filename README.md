@@ -45,7 +45,7 @@ But also two additional options:
 ```php
 SearchableSelect::make('Content', 'content_id')
     ->resource("contents")
-    ->label("custom_label_field") // Defaults to 'title'
+    ->label("custom_label_field") // Defaults to the static $title attribute of the resource class
     ->value("custom_value_field") // Defaults to 'id'
 ```
 
