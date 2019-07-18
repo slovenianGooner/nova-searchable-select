@@ -18,7 +18,7 @@ class SearchableSelect extends Select
     {
         parent::__construct($name, $attribute, $resolveCallback);
         $this->withMeta([
-            "label" => "title",
+            "label" => null,
             "valueField" => "id",
             "isMultiple" => false,
             "max" => 20

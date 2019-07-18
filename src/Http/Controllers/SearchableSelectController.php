@@ -25,8 +25,10 @@ class SearchableSelectController extends Controller
             $items = $items->take($request->get("max"));
         }
 
-        $items = $items->get([$request->get("label"), $request->get("value")])->each(function ($item) use ($request) {
-            $item->display = $item->{$request->get("label")};
+        $resource = $request->resource();
+        $label = $request->get("label", $resource::$title);
+        $items = $items->get([$label, $request->get("value")])->each(function ($item) use ($request, $label) {
+            $item->display = $item->{$label};
             $item->value = $item->{$request->get("value")};
         });
 
