@@ -15,10 +15,8 @@ class SearchableSelectController extends Controller
 
         if ($searchable && $request->filled('search')) {
             $items = $request->model()::search($request->get('search'));
-            $getArray = [];
         } else {
             $items = $request->toQuery();
-            $getArray = [$request->get("value")];
         }
 
         if ($request->has("use_resource_ids")) {
