@@ -9,7 +9,18 @@ class SearchableSelectController extends Controller
 {
     public function index(ResourceIndexRequest $request)
     {
-        $items = $request->toQuery();
+        $searchable = method_exists($request->model(), 'search');
+        $resource = $request->resource();
+        $label = $request->get("label", $resource::$title);
+
+        if ($searchable && $request->filled('search')) {
+            $items = $request->model()::search($request->get('search'));
+            $getArray = [];
+        } else {
+            $items = $request->toQuery();
+            $getArray = [$request->get("value")];
+        }
+
         if ($request->has("use_resource_ids")) {
             $ids = $request->has("resource_ids") ? json_decode($request->get("resource_ids")) : [];
             $items = $items->whereIn($request->get("value"), $ids);
@@ -20,14 +31,11 @@ class SearchableSelectController extends Controller
             $items = $items->whereNotIn($request->get("value"), $ids);
         }
 
-
         if ($request->has("max")) {
             $items = $items->take($request->get("max"));
         }
 
-        $resource = $request->resource();
-        $label = $request->get("label", $resource::$title);
-        $items = $items->get([$label, $request->get("value")])->each(function ($item) use ($request, $label) {
+        $items = $items->get()->each(function ($item) use ($request, $label) {
             $item->display = $item->{$label};
             $item->value = $item->{$request->get("value")};
         });
