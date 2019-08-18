@@ -45,10 +45,17 @@ class SearchableSelect extends Select
         if (class_exists($name)) {
             $name = $name::uriKey();
         }
-        
-        return $this->withMeta([
+
+        $meta = [
             "searchableResource" => $name
-        ]);
+        ];
+
+        if (!isset($this->meta["label"])) {
+            $resource = Nova::resourceForKey($name);
+            $meta["label"] = $resource::$title;
+        }
+
+        return $this->withMeta($meta);
     }
 
     public function label($label)
@@ -78,7 +85,7 @@ class SearchableSelect extends Select
             if (!$labelValue) {
                 return $value;
             }
-            
+
             return $labelValue;
         });
     }
