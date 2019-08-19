@@ -33,7 +33,7 @@ class SearchableSelectController extends Controller
             $items = $items->take($request->get("max"));
         }
 
-        $items = $items->get()->each(function ($item) use ($request, $label) {
+        $items = $items->get()->makeVisible(['display', 'value'])->each(function ($item) use ($request, $label) {
             $item->display = $item->{$label};
             $item->value = $item->{$request->get("value")};
         });
