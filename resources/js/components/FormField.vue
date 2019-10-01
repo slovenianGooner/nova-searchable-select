@@ -101,6 +101,7 @@ export default {
    */
   mounted() {
     this.initializeComponent()
+    this.$nextTick(this.loadResourcesOnNew);
   },
 
   methods: {
@@ -253,6 +254,16 @@ export default {
           this.availableResources,
           r => r[this.field.valueField] == this.selectedResourceId
         )
+      }
+    },
+
+    /**
+     * When not editing and loadsResourcesOnNew is enable we preload a list of resources
+     */
+    loadResourcesOnNew() {
+      if ('loadResourcesOnNew' in this.field && this.field.loadResourcesOnNew && !this.editingExistingResource) {
+        this.search = ''
+        this.getAvailableResources('')
       }
     }
   },

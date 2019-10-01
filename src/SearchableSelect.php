@@ -89,4 +89,11 @@ class SearchableSelect extends Select
             return $labelValue;
         });
     }
+
+    public function loadResourcesOnNew()
+    {
+        return $this->withMeta([
+            "loadResourcesOnNew" => true
+        ]);
+    }
 }
