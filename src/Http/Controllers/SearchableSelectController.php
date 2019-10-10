@@ -32,8 +32,10 @@ class SearchableSelectController extends Controller
         if ($request->has("max")) {
             $items = $items->take($request->get("max"));
         }
-
-        $request->resource()::relatableQuery($request, $items);
+    
+        if (!$searchable) { // Don't apply the relatableQuery if not searchable, it won't handle it
+            $request->resource()::relatableQuery($request, $items);
+        }
 
         $items = $items->get()->makeVisible(['display', 'value'])->each(function ($item) use ($request, $label) {
             $item->display = $item->{$label};
