@@ -9,7 +9,7 @@
           :data="resource"
         >
           <div class="flex items-center px-4 py-1">
-            <div class="mr-2">{{resource[field.label]}}</div>
+            <div class="mr-2">{{resource.display}}</div>
             <div @click="removeResource(resource)" class="cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path
