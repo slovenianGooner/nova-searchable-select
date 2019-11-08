@@ -59,6 +59,14 @@ SearchableSelect::make('Content', 'content_id')
     ->nullable()
 ```
 
+You can use the base model's search method instead of the Nova resource's search method with `useBaseSearch()`.
+
+```php
+SearchableSelect::make('Content', 'content_id')
+    ->resource("contents")
+    ->useBaseSearch()
+```
+
 ![](multiple.gif)
 
 Another option is to define the maximum number of items shown in the search. (Default: 20)
