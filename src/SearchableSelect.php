@@ -98,10 +98,10 @@ class SearchableSelect extends Select
         ]);
     }
     
-    public function useBaseSearch()
+    public function useBaseSearch($useBaseSearch = true)
     {
         return $this->withMeta([
-            "searchable" => true
+            "searchable" => $useBaseSearch
         ]);
     }
 }
