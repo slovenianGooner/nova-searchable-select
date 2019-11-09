@@ -9,7 +9,7 @@ class SearchableSelectController extends Controller
 {
     public function index(ResourceIndexRequest $request)
     {
-        $searchable = method_exists($request->model(), 'search');
+        $searchable = $request->get("searchable", false);
         $resource = $request->resource();
         $label = $request->get("label", $resource::$title);
 

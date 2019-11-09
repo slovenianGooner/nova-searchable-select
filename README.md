@@ -68,3 +68,11 @@ SearchableSelect::make("Content", "content_id")
                 ->resource("contents")
                 ->max(10)
 ```
+
+You can use the base model's search method instead of the Nova resource's search method with `useBaseSearch()`.
+
+```php
+SearchableSelect::make('Content', 'content_id')
+    ->resource("contents")
+    ->useBaseSearch()
+```

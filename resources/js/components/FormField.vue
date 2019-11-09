@@ -298,6 +298,7 @@ export default {
       return {
         params: {
           search: this.search,
+          searchable: this.field.searchable == true ? 1 : 0,
           label: this.field.label,
           value: this.field.valueField
         }

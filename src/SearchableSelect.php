@@ -21,7 +21,8 @@ class SearchableSelect extends Select
             "label" => null,
             "valueField" => "id",
             "isMultiple" => false,
-            "max" => 20
+            "max" => 20,
+            "searchable" => false
         ]);
     }
 
@@ -94,6 +95,13 @@ class SearchableSelect extends Select
     {
         return $this->withMeta([
             "loadResourcesOnNew" => true
+        ]);
+    }
+    
+    public function useBaseSearch($useBaseSearch = true)
+    {
+        return $this->withMeta([
+            "searchable" => $useBaseSearch
         ]);
     }
 }

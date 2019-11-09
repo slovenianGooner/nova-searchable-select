@@ -37,6 +37,7 @@ export default {
 						params: {
 							label: this.field.label,
 							value: this.field.valueField,
+                            searchable: this.field.searchable == true ? 1 : 0,
 							use_resource_ids: this.field.isMultiple,
 							resource_ids: this.field.value
 						}
