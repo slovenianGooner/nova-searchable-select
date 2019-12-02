@@ -12,6 +12,7 @@ class SearchableSelectController extends Controller
         $searchable = $request->get("searchable", false);
         $resource = $request->resource();
         $label = $request->get("label", $resource::$title);
+        $labelPrefix = $request->get("labelPrefix", false);
 
         if ($searchable && $request->filled('search')) {
             $items = $request->model()::search($request->get('search'));
@@ -37,8 +38,12 @@ class SearchableSelectController extends Controller
             $request->resource()::relatableQuery($request, $items);
         }
 
-        $items = $items->get()->makeVisible(['display', 'value'])->each(function ($item) use ($request, $label) {
-            $item->display = $item->{$label};
+        $items = $items->get()->makeVisible(['display', 'value'])->each(function ($item) use ($request, $labelPrefix, $label) {
+            $item->display = '';
+            if($labelPrefix) {
+                $item->display .= $item->{$labelPrefix} . ': ';
+            }
+            $item->display .= $item->{$label};
             $item->value = $item->{$request->get("value")};
         });
 

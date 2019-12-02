@@ -19,6 +19,7 @@ class SearchableSelect extends Select
         parent::__construct($name, $attribute, $resolveCallback);
         $this->withMeta([
             "label" => null,
+            "labelPrefix" => null,
             "valueField" => "id",
             "isMultiple" => false,
             "max" => 20,
@@ -63,6 +64,13 @@ class SearchableSelect extends Select
     {
         return $this->withMeta([
             "label" => $label
+        ]);
+    }
+
+    public function labelPrefix($labelPrefix)
+    {
+        return $this->withMeta([
+            "labelPrefix" => $labelPrefix
         ]);
     }
 
