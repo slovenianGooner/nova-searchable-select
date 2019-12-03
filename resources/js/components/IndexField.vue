@@ -36,6 +36,7 @@ export default {
 					{
 						params: {
 							label: this.field.label,
+                            labelPrefix: this.field.labelPrefix,
 							value: this.field.valueField,
                             searchable: this.field.searchable == true ? 1 : 0,
 							use_resource_ids: this.field.isMultiple,

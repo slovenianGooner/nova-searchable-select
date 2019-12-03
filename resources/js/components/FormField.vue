@@ -300,6 +300,7 @@ export default {
           search: this.search,
           searchable: this.field.searchable == true ? 1 : 0,
           label: this.field.label,
+          labelPrefix: this.field.labelPrefix,
           value: this.field.valueField
         }
       }
