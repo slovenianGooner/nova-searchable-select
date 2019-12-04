@@ -40,12 +40,13 @@ SearchableSelect::make('Content', 'content_id')
     ->nullable()
 ```
 
-But also two additional options:
+But also three additional options:
 
 ```php
 SearchableSelect::make('Content', 'content_id')
     ->resource("contents")
     ->label("custom_label_field") // Defaults to the static $title attribute of the resource class
+    ->labelPrefix("custom_prefix_field") // Allows you to prefix the label field with one other field, i.e. "code":"label"
     ->value("custom_value_field") // Defaults to 'id'
 ```
 
