@@ -52,11 +52,6 @@ class SearchableSelect extends Select
             "searchableResource" => $name
         ];
 
-        if (!isset($this->meta["label"])) {
-            $resource = Nova::resourceForKey($name);
-            $meta["label"] = $resource::$title;
-        }
-
         return $this->withMeta($meta);
     }
 

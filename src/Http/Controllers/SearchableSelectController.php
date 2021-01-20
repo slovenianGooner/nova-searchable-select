@@ -35,7 +35,7 @@ class SearchableSelectController extends Controller
         }
 
         if (!$searchable) { // Don't apply the relatableQuery if not searchable, it won't handle it
-            $request->resource()::relatableQuery($request, $items);
+            $resource::relatableQuery($request, $items);
         }
 
         $items = $items->get()->makeVisible(['display', 'value'])->each(function ($item) use ($request, $labelPrefix, $label, $resource) {
@@ -49,8 +49,6 @@ class SearchableSelectController extends Controller
             $item->display .= $label ? $item->{$label} : $resourceObj->title();
             $item->value = $item->{$request->get("value")};
         });
-
-        $resource = $request->resource();
 
         return response()->json([
             "label" => $resource::label(),
